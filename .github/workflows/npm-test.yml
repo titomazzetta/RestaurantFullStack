@@ -21,7 +21,7 @@ jobs:
         run: npm install
 
       - name: Build Frontend
-        run: npm run build # or your build script
+        run: npm run dev # or your build script
 
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
