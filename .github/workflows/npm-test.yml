@@ -31,7 +31,7 @@ jobs:
 
    # Start the backend (if needed)
       - name: Start backend (if present)
-        run: yarn dev --if-present
+        run: npm start --if-present
         working-directory: ./backend 
 
       # Start the frontend (if needed)
