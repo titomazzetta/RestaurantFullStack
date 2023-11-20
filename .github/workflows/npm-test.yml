@@ -22,17 +22,16 @@ jobs:
       # Install frontend dependencies (npm)
       - name: Install frontend dependencies
         run: npm install
-        working-directory: ./  # Specify the directory where frontend code is located
 
       # Install backend dependencies (yarn)
       - name: Install backend dependencies
         run: yarn install
         working-directory: ./backend  # Specify the directory where backend code is located
 
-      # Start the backend
+      # Build and start the backend
       - name: Build and start backend
         run: |
-          cd ./backend  # Navigate to the backend directory
+          cd ./backend  # Navigate to the backend directory relative to the root folder
           yarn build
           yarn start
         working-directory: ./backend  # Specify the directory where backend code is located
@@ -40,7 +39,6 @@ jobs:
       # Start the frontend (if needed)
       - name: Start frontend (if present)
         run: npm run dev --if-present
-        working-directory: ./frontend  # Specify the directory where frontend code is located
 
       # Run tests
       - name: Run tests
