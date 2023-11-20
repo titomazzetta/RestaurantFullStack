@@ -32,12 +32,12 @@ jobs:
       - name: Build and start backend
         run: |
           yarn build
-          yarn start
+          yarn start &
         working-directory: ./backend  # Specify the directory where backend code is located
 
       # Start the frontend (if needed)
       - name: Start frontend (if present)
-        run: npm run dev --if-present
+        run: npm run dev --if-present &
 
       # Run tests
       - name: Run tests
