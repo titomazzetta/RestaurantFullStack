@@ -31,7 +31,6 @@ jobs:
       # Build and start the backend
       - name: Build and start backend
         run: |
-          cd ./backend  # Navigate to the backend directory relative to the root folder
           yarn build
           yarn start
         working-directory: ./backend  # Specify the directory where backend code is located
