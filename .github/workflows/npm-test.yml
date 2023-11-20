@@ -1,9 +1,9 @@
-name: npm test
+name: Build and Deploy
 
 on: [push]
 
 jobs:
-  test:
+  build-and-test:
     runs-on: ubuntu-latest
 
     strategy:
@@ -19,26 +19,26 @@ jobs:
         with:
           node-version: ${{ matrix.node_version }}
 
-      # Install frontend dependencies (npm)
-      - name: Install frontend dependencies
+      - name: Install dependencies
         run: npm install
 
-      # Install backend dependencies (yarn)
-      - name: Install backend dependencies
-        run: yarn install
-        working-directory: ./backend  # Specify the directory where backend code is located
+      - name: Build the project
+        run: npm run build
 
-      # Build and start the backend
-      - name: Build and start backend
-        run: |
-          yarn build
-          yarn start &
-        working-directory: ./backend  # Specify the directory where backend code is located
-
-      # Start the frontend (if needed)
-      - name: Start frontend (if present)
-        run: npm run dev --if-present &
-
-      # Run tests
       - name: Run tests
         run: npm test
+
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'  # Only run deployment for the main branch
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Deploy to Firebase
+        uses: w9jds/firebase-action@master
+        with:
+          args: deploy --only hosting
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
