@@ -58,7 +58,7 @@ function Login(props) {
               <Form>
                 <fieldset disabled={loading}>
                   <FormGroup>
-                  <Label for="email">Email:</Label>
+                  <Label for="email">Email Address:</Label>
                     <Input
                       onChange={(event) => onChange(event)}
                       name="identifier"
