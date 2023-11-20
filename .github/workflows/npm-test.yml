@@ -1,31 +1,45 @@
-name: Deploy to Firebase Hosting
 
-on:
-  push:
-    branches:
-      - main # or your default branch
+name: npm test
+
+on: [push]
 
 jobs:
-  deploy:
+  test:
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node_version: [14.x]  # Node.js version 14.x to match your local development environment
+
     steps:
-      - name: Checkout Repository
+      - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Install Node.js
-        uses: actions/setup-node@v2
+      - name: Set up Node.js ${{ matrix.node_version }}
+        uses: actions/setup-node@v1
         with:
-          node-version: '14' # or the version you're using
+          node-version: ${{ matrix.node_version }}
 
-      - name: Install Dependencies
+      # Install frontend dependencies (npm)
+      - name: Install frontend dependencies
         run: npm install
 
-      - name: Build Frontend
-        run: npm run dev # or your build script
+      # Install backend dependencies (yarn)
+      - name: Install backend dependencies
+        run: yarn install
+        working-directory: ./backend  # Specify the directory where backend code is located
 
-      - name: Deploy to Firebase
-        uses: w9jds/firebase-action@master
-        with:
-          args: deploy --only hosting
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+      # Build and start the backend
+      - name: Build and start backend
+        run: |
+          yarn build
+          yarn start &
+        working-directory: ./backend  # Specify the directory where backend code is located
+
+      # Start the frontend (if needed)
+      - name: Start frontend (if present)
+        run: npm run dev --if-present &
+
+      # Run tests
+      - name: Run tests
+        run: npm test
