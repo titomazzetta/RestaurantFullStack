@@ -1,0 +1,17 @@
+name: List Files in Root
+
+on:
+  push:
+    branches:
+      - main  # or any other branch you want this workflow to run on
+
+jobs:
+  list_files:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: List Files
+        run: ls -la
