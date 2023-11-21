@@ -1,4 +1,7 @@
 language: node_js
-rvm:
- - 2.2
- - node_js
+node_js:
+  - "node"
+cache: npm
+script:
+  - npm install
+  - npm test
